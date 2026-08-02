@@ -19,7 +19,8 @@ public class FeeController {
     public ResponseEntity<FeeResponseDto> getFee(@RequestParam double amount,
                                                  @RequestParam int currencyCode){
 
-        FeeResponseDto fee = feeService.getFee();
+//        FeeResponseDto fee = feeService.getFee();
+        return null;
 
 }
 }

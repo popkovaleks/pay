@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class User implements UserDetails {
 
     @Id
@@ -32,6 +33,9 @@ public class User implements UserDetails {
 
     @Enumerated
     private Role role;
+
+
+    public enum Role {USER, ADMIN}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -82,7 +86,13 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    public Role getRole() {
+        return role;
+    }
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public String getPassword() {
         return password;
@@ -93,4 +103,4 @@ public class User implements UserDetails {
     }
 }
 
-enum Role {USER, ADMIN}
+

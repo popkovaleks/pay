@@ -31,6 +31,7 @@ public class AuthController {
         User user = new User();
         user.setUsername(request.username());
         user.setPassword(passwordEncoder.encode(request.password()));
+        user.setRole(User.Role.USER);
         userRepository.save(user);
 
         String token = jwtService.generateToken(user);
@@ -43,7 +44,7 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(
                         request.username(), request.password()));
 
-        User user = userRepository.findByUsername(request.username())
+        User user = userRepository.findUserByUsername(request.username())
                 .orElseThrow();
 
         String token = jwtService.generateToken(user);

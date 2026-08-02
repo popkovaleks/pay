@@ -27,29 +27,29 @@ public class PaymentServiceImplementation implements PaymentService {
     @Autowired
     private CurrencyServiceImplementation currencyService;
 
-    @Transactional
-    public void processPayment(double amount, int currencyCode, Long recipientId) {
-        double amountInRub = amount * currencyService.getRate(currencyCode);
-//        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        User user = userRepository.findUserById(userId).get();
-        Payment payment = new Payment(amountInRub, user, recipientId);
-        paymentRepository.save(payment);
-        if (amountInRub < 1000) {
-            Fee fee = new Fee(amountInRub * 0.015, user);
-            feeRepository.save(fee);
-        }
-        if (amountInRub > 1000) {
-            Fee fee = new Fee(amountInRub * 0.01, user);
-            feeRepository.save(fee);
-        }
-        if (amountInRub > 5000) {
-            Fee fee = new Fee(amountInRub * 0.005, user);
-            feeRepository.save(fee);
-        }
-        try {
-            notificationRestClient.notify(payment);
-        } catch (Throwable t) {
-            // do nothing
-        }
-    }
+//    @Transactional
+//    public void processPayment(double amount, int currencyCode, Long recipientId) {
+//        double amountInRub = amount * currencyService.getRate(currencyCode);
+////        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+////        User user = userRepository.findUserById(userId).get();
+//        Payment payment = new Payment(amountInRub, user, recipientId);
+//        paymentRepository.save(payment);
+//        if (amountInRub < 1000) {
+//            Fee fee = new Fee(amountInRub * 0.015, user);
+//            feeRepository.save(fee);
+//        }
+//        if (amountInRub > 1000) {
+//            Fee fee = new Fee(amountInRub * 0.01, user);
+//            feeRepository.save(fee);
+//        }
+//        if (amountInRub > 5000) {
+//            Fee fee = new Fee(amountInRub * 0.005, user);
+//            feeRepository.save(fee);
+//        }
+//        try {
+//            notificationRestClient.notify(payment);
+//        } catch (Throwable t) {
+//            // do nothing
+//        }
+//    }
 }

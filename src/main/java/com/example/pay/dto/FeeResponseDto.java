@@ -1,24 +1,15 @@
 package com.example.pay.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.UUID;
 
+@Getter
+@Setter
 public class FeeResponseDto {
     private UUID id;
-    private double value;
-
-    public double getValue() {
-        return value;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
+    private long fee;
+    private long amount;
+    private long totalAmount;
 }

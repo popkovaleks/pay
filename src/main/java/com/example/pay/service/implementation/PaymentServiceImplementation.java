@@ -1,31 +1,50 @@
 package com.example.pay.service.implementation;
 
+import com.example.pay.dto.PaymentResponseDto;
 import com.example.pay.entity.Fee;
 import com.example.pay.entity.Payment;
 import com.example.pay.entity.User;
+import com.example.pay.exception.PaymentNotFoundException;
+import com.example.pay.mapper.PaymentMapper;
 import com.example.pay.repository.FeeRepository;
 import com.example.pay.repository.PaymentRepository;
 import com.example.pay.repository.UserRepository;
 import com.example.pay.service.PaymentService;
+import com.example.pay.service.PaymentUpdateService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Currency;
+import java.util.UUID;
 
 @Service
 public class PaymentServiceImplementation implements PaymentService {
-    @Autowired
-    private PaymentRepository paymentRepository;
-    @Autowired
-    private FeeRepository feeRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private final PaymentRepository paymentRepository;
+
 
 //    private NotificationRestClient notificationRestClient = new NotificationRestClient();
 //    private CbrRestClient cbrRestClient = new CbrRestClient();
-    @Autowired
-    private CurrencyServiceImplementation currencyService;
+//    private final CurrencyServiceImplementation currencyService;
+    private final PaymentUpdateService paymentUpdateService;
+
+    public PaymentServiceImplementation(
+            PaymentRepository paymentRepository,
+            CurrencyServiceImplementation currencyService,
+            PaymentUpdateService paymentUpdateService
+    ) {
+        this.paymentRepository = paymentRepository;
+//        this.currencyService = currencyService;
+        this.paymentUpdateService = paymentUpdateService;
+    }
+
+    public PaymentResponseDto processPayment(UUID paymentId){
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new PaymentNotFoundException(paymentId));
+
+        PaymentMapper mapper = new PaymentMapper();
+
+        return mapper.paymentToResponseDto(paymentUpdateService.updatePayment(payment, "PAID"));
+    }
 
 //    @Transactional
 //    public void processPayment(double amount, int currencyCode, Long recipientId) {

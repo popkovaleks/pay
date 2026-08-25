@@ -1,7 +1,9 @@
 package com.example.pay.config;
 
+import com.example.pay.entity.User;
 import com.example.pay.service.implementation.JwtServiceImplementation;
 
+import com.example.pay.service.implementation.UserDetailsServiceImplementaition;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +23,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtServiceImplementation jwtService;
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImplementaition userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -39,12 +41,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String username = jwtService.extractUsername(jwt);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            User user = userDetailsService.loadUserByUsername(username);
 
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            if (jwtService.isTokenValid(jwt, user)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
+                                user, null, user.getAuthorities());
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);

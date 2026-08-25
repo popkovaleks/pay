@@ -1,34 +1,45 @@
 package com.example.pay.service.implementation;
 
 import com.example.pay.entity.Fee;
+import com.example.pay.entity.Payment;
 import com.example.pay.entity.User;
 import com.example.pay.repository.FeeRepository;
+import com.example.pay.repository.PaymentRepository;
 import com.example.pay.service.FeeCalculationService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class FeeCalculationServiceImplementation implements FeeCalculationService {
 
-    @Autowired
-    private FeeRepository feeRepository;
+    private PaymentRepository paymentRepository;
+
+    public FeeCalculationServiceImplementation(PaymentRepository paymentRepository){
+        this.paymentRepository = paymentRepository;
+    }
 
     @Transactional
-    public Fee calculateFee(User user, double amountInRub) {
-
-        double feeAmount = 0;
-        if (amountInRub > 5000) {
-            feeAmount = amountInRub * 0.005;
+    public Payment calculateFee(User user, User recipient, long amountInRub) {
+        int fractionDigits = 2;
+        BigDecimal amount = BigDecimal.valueOf(amountInRub).movePointLeft(fractionDigits);
+        BigDecimal feeAmount = new BigDecimal("0");
+        if (amount.compareTo(new BigDecimal("5000")) > 0) {
+            feeAmount = amount.multiply(new BigDecimal("0.005"));
+        } else if (amount.compareTo(new BigDecimal("1000")) < 0) {
+            feeAmount = amount.multiply(new BigDecimal("0.015"));
+        } else {
+            feeAmount = amount.multiply(new BigDecimal("0.01"));
         }
-        if (amountInRub < 1000) {
-            feeAmount = amountInRub * 0.015;
-        }
-        if (amountInRub >= 1000 && amountInRub <= 5000) {
-            feeAmount = amountInRub * 0.01;
-        }
-        Fee fee = new Fee(feeAmount, user);
-        feeRepository.save(fee);
-        return fee;
+        Payment payment = new Payment(
+                amount.movePointRight(fractionDigits).longValueExact(),
+                user,
+                recipient,
+                feeAmount.movePointRight(fractionDigits).longValueExact()
+        );
+        paymentRepository.save(payment);
+        return payment;
     }
 }

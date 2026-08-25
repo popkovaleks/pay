@@ -1,13 +1,10 @@
 package com.example.pay.service.implementation;
 
-import com.example.pay.entity.Fee;
 import com.example.pay.entity.Payment;
 import com.example.pay.entity.User;
-import com.example.pay.repository.FeeRepository;
 import com.example.pay.repository.PaymentRepository;
 import com.example.pay.service.FeeCalculationService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

@@ -1,10 +1,7 @@
 package com.example.pay.controller;
 
 import com.example.pay.dto.*;
-import com.example.pay.entity.Payment;
 import com.example.pay.entity.User;
-import com.example.pay.exception.PaymentNotFoundException;
-import com.example.pay.repository.PaymentRepository;
 import com.example.pay.service.PaymentService;
 import com.example.pay.service.implementation.FeeServiceImplementation;
 import org.springframework.http.HttpStatus;
@@ -44,7 +41,6 @@ public class PaymentController {
                 paymentRequest.recipientId(),
                 paymentRequest.amount(),
                 paymentRequest.currencyCode() );
-//        FeeResponseDto fee = feeService.getFee();
         return ResponseEntity.status(HttpStatus.CREATED).body(responseFee);
 
     }

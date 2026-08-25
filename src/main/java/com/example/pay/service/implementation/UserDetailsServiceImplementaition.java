@@ -3,7 +3,6 @@ package com.example.pay.service.implementation;
 import com.example.pay.entity.User;
 import com.example.pay.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

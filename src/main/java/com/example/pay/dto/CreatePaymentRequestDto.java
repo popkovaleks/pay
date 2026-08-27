@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record CreatePaymentRequestDto(
-
         long amount,
         UUID recipientId,
         int currencyCode

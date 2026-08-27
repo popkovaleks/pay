@@ -12,7 +12,11 @@ import java.util.UUID;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(PaymentException.class)
+    @ExceptionHandler({PaymentException.class,
+            EmptyCurrencyException.class,
+            AmountBelowZeroException.class,
+            AmountEqualsZeroException.class
+    })
     public ResponseEntity<ErrorResponseDto> handlePaymentException(PaymentException ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(
                 ex.getErrorCode(),
@@ -23,10 +27,9 @@ public class GlobalExceptionHandler {
         );
     }
 
-
-    @ExceptionHandler(ReceiverNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleReceiverNotFoundException(ReceiverNotFoundException ex){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(
+    @ExceptionHandler(PaymentNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handlePaymentNotFoundException(PaymentNotFoundException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(
                         ex.getErrorCode(),
                         ex.getErrorTitle(),
                         ex.getErrorDetails(),
@@ -35,10 +38,9 @@ public class GlobalExceptionHandler {
         );
     }
 
-
-    @ExceptionHandler(SenderNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleSenderNotFoundException(SenderNotFoundException ex){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(
+    @ExceptionHandler({ReceiverNotFoundException.class, SenderNotFoundException.class})
+    public ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(
                         ex.getErrorCode(),
                         ex.getErrorTitle(),
                         ex.getErrorDetails(),

@@ -28,14 +28,11 @@ public class PaymentController {
     }
 
     @PostMapping("/getFee")
-    public ResponseEntity<?> getFee(Authentication authentication,
+    public ResponseEntity<FeeResponseDto> getFee(Authentication authentication,
                                                @Valid @RequestBody CreatePaymentRequestDto paymentRequest){
 
         UUID userId = ((User) authentication.getPrincipal()).getId();
 
-        if (userId.equals(paymentRequest.recipientId())){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(1, "You can't pay to yourself"));
-        }
 
         FeeResponseDto responseFee = feeService.getFee(
                 userId,
@@ -47,7 +44,7 @@ public class PaymentController {
     }
 
     @PostMapping("/payment")
-    public ResponseEntity<?> payment(Authentication authentication,
+    public ResponseEntity<PaymentResponseDto> payment(Authentication authentication,
                                      @RequestBody ConfirmPaymentRequestDto paymentRequest){
 
         PaymentResponseDto responsePayment = paymentService.processPayment(paymentRequest.id());

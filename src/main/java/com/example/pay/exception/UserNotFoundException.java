@@ -2,16 +2,11 @@ package com.example.pay.exception;
 
 import java.util.UUID;
 
-public class UserNotFoundException extends RuntimeException{
-    private final UUID userId;
+public class UserNotFoundException extends UserException{
 
 
-    public UserNotFoundException(UUID userId) {
-        super("User not found: " + userId);
-        this.userId = userId;
+    public UserNotFoundException(UUID userId, String roleInPayment) {
+        super(userId, "UserNotFoundException", roleInPayment + " not found", "User not found: " + userId);
     }
 
-    public UUID getUserId() {
-        return userId;
-    }
 }

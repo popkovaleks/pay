@@ -27,7 +27,7 @@ public class PaymentServiceImplementation implements PaymentService {
         Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new PaymentNotFoundException(paymentId));
 
         PaymentMapper mapper = new PaymentMapper();
-
+        
         return mapper.paymentToResponseDto(paymentUpdateService.updatePayment(payment, "PAID"));
     }
 }

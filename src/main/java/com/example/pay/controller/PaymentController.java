@@ -4,6 +4,7 @@ import com.example.pay.dto.*;
 import com.example.pay.entity.User;
 import com.example.pay.service.PaymentService;
 import com.example.pay.service.implementation.FeeServiceImplementation;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,7 +29,7 @@ public class PaymentController {
 
     @PostMapping("/getFee")
     public ResponseEntity<?> getFee(Authentication authentication,
-                                                 @RequestBody CreatePaymentRequestDto paymentRequest){
+                                               @Valid @RequestBody CreatePaymentRequestDto paymentRequest){
 
         UUID userId = ((User) authentication.getPrincipal()).getId();
 

@@ -1,5 +1,9 @@
 package com.example.pay.dto;
 
-public record ErrorResponseDto(int errorCode,
-                               String errorMessage) {
+import java.util.UUID;
+
+public record ErrorResponseDto(String errorCode,
+                               String errorTitle,
+                               String errorDetails,
+                               UUID errorId) {
 }

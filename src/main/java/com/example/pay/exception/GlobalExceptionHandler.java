@@ -38,6 +38,17 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(CurrencyIsNotSupportedException.class)
+    public ResponseEntity<ErrorResponseDto> handleCurrencyIsNotSupportedException(CurrencyIsNotSupportedException ex){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponseDto(
+                        ex.getErrorCode(),
+                        ex.getErrorTitle(),
+                        ex.getErrorDetails(),
+                        UUID.randomUUID()
+                )
+        );
+    }
+
     @ExceptionHandler({ReceiverNotFoundException.class, SenderNotFoundException.class})
     public ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(

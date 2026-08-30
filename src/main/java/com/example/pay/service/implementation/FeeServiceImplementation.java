@@ -40,6 +40,7 @@ public class FeeServiceImplementation implements FeeService {
         if(currencyCode != 643){
             amount = MoneyConverter.convert(amount, currencyCode);
         }
+        //TODO: Полноценная заглушка сервиса валют
 
         PaymentMapper mapper = new PaymentMapper();
         return mapper.feeToResponseDto(feeCalculationService.calculateFee(user, recipient, amount));

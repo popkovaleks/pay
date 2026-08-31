@@ -57,4 +57,8 @@ public class JwtServiceImplementation implements JwtService {
     public boolean isTokenExpired(String token) {
         return extractClaims(token).getExpiration().before(new Date());
     }
+
+    public String extractExpirationIn(String token) {
+        return Long.toString((extractClaims(token).getExpiration().getTime() - extractClaims(token).getIssuedAt().getTime())/1000);
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.pay.service;
 
+import java.math.BigDecimal;
+
 public interface CurrencyService {
-    double getRate(int currencyCode);
+    BigDecimal getRate(int currencyCode);
 }

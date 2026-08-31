@@ -17,16 +17,16 @@ import java.util.UUID;
 @Service
 public class FeeServiceImplementation implements FeeService {
 
-    private final CurrencyServiceImplementation currencyService;
     private final FeeCalculationServiceImplementation feeCalculationService;
     private final UserRepository userRepository;
+    private final MoneyConverter moneyConverter;
 
-    public FeeServiceImplementation(CurrencyServiceImplementation currencyService,
-                                    FeeCalculationServiceImplementation feeCalculationService,
-                                    UserRepository userRepository) {
-        this.currencyService = currencyService;
+    public FeeServiceImplementation(FeeCalculationServiceImplementation feeCalculationService,
+                                    UserRepository userRepository,
+                                    MoneyConverter moneyConverter) {
         this.feeCalculationService = feeCalculationService;
         this.userRepository = userRepository;
+        this.moneyConverter = moneyConverter;
     }
 
     public FeeResponseDto getFee(UUID userId, UUID recipientId, long amount, int currencyCode) {
@@ -38,7 +38,7 @@ public class FeeServiceImplementation implements FeeService {
         User recipient = userRepository.findById(recipientId).orElseThrow(() -> new ReceiverNotFoundException(recipientId));
 
         if(currencyCode != 643){
-            amount = MoneyConverter.convert(amount, currencyCode);
+            amount = moneyConverter.convert(amount, currencyCode);
         }
         //TODO: Полноценная заглушка сервиса валют
 

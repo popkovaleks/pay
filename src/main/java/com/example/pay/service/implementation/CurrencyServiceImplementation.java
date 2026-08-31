@@ -3,11 +3,13 @@ package com.example.pay.service.implementation;
 import com.example.pay.service.CurrencyService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class CurrencyServiceImplementation implements CurrencyService {
 
 
-    public double getRate(int currencyCode) {
-        return 1.3;
+    public BigDecimal getRate(int currencyCode) {
+        return new BigDecimal("1.3");
     }
 }

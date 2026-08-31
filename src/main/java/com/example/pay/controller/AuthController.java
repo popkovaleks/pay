@@ -35,7 +35,8 @@ public class AuthController {
         userRepository.save(user);
 
         String token = jwtService.generateToken(user);
-        return ResponseEntity.ok(new AuthResponse(token));
+        String expiresIn = jwtService.extractExpirationIn(token);
+        return ResponseEntity.ok(new AuthResponse(token, expiresIn));
     }
 
     @PostMapping("/login")
@@ -48,6 +49,7 @@ public class AuthController {
                 .orElseThrow();
 
         String token = jwtService.generateToken(user);
-        return ResponseEntity.ok(new AuthResponse(token));
+        String expiresIn = jwtService.extractExpirationIn(token);
+        return ResponseEntity.ok(new AuthResponse(token, expiresIn));
     }
 }
